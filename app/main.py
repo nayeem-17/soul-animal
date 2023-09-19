@@ -11,9 +11,7 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 # Database configuration
-DATABASE_URL = (
-    os.environ.get("DATABASE_URL") | "postgresql://postgres:pass@localhost/postgres"
-)
+DATABASE_URL = os.environ.get("DATABASE_URL")
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

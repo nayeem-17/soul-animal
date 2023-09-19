@@ -31,3 +31,7 @@ archive.zip
 
 
 env/
+*hcl
+*lock.info
+.terraform/
+*backup
