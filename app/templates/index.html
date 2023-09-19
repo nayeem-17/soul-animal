@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Soul Animal Finder</title>
+</head>
+<body>
+    <h1>Find Your Soul Animal</h1>
+    <form method="post" action="/get_soul_animal/">
+        <label for="name">Enter your name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <button type="submit">Find My Soul Animal</button>
+    </form>
+    {% if name %}
+        <p>{{ name }}, your soul animal is a {{ soul_animal }}!</p>
+    {% endif %}
+</body>
+</html>
