@@ -85,7 +85,7 @@ resource "tls_private_key" "example" {
 
 # Save the private key to a file in the current directory
 resource "local_file" "private_key" {
-  filename = "private_key.pem"
+  filename = "aws-test.pem"
   content  = tls_private_key.example.private_key_pem
 }
 
@@ -115,19 +115,29 @@ resource "aws_instance" "main_server" {
   tags = {
     "Name" = "Main Server"
   }
-  # Provisioner to copy a file to the instance
-  provisioner "file" {
-    source      = "../app/*" # Path to the local file
-    destination = "~/app/**" # Destination path on the remote instance
-  }
+  # # Connection configuration for provisioners
+  # connection {
+  #   type        = "ssh"
+  #   user        = "ubuntu"             # or the username of your instance
+  #   private_key = file("aws-test.pem") # Specify the path to your private key
+  #   host        = self.public_ip       # Use the public IP of the instance
+  # }
 
-  provisioner "remote-exec" {
-    inline = [
-      "cd app ",
-      "docker-compose -up -d"
-      # Add any additional commands you want to run after file execution
-    ]
-  }
+  # # Provisioner to copy a file to the instance
+  # provisioner "file" {
+  #   source      = "/home/kingpin/Documents/soul-animal/app/**" # Path to the local file
+  #   destination = "/app/"                                      # Destination path on the remote instance
+  # }
+
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "cd app ",
+  #     " docker run -d   --name postgres-test   -p 5432:5432   -e POSTGRES_USER=postgres   -e POSTGRES_PASSWORD=pass   -e POSTGRES_DB=demo   postgres",
+  #     "docker build -t soul-animal:latest .",
+  #     "docker run -d   -p 8000:8000   --name soul-animal   -e DATABASE_URL=postgresql://postgres:pass@172.17.0.1/demo   soul-animal:latest"
+
+  #   ]
+  # }
 }
 
 # i want to output the main_server public ip
