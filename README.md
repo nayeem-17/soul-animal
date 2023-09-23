@@ -1,7 +1,7 @@
 # This is a simple application written in FastApi which will tell you your soul animal
 ## Plans
 - [x] Create a simple application
-    - [ ] Deploy the application to AWS EC2 , application, database all in same instance
+    - [x] Deploy the application to AWS EC2 , application, database all in same instance
     - [ ] Deploy the application to AWS EC2, db in AWS RDS
     - [ ] Add ELB to the application
     - [ ] Add multi-AZ 

@@ -12,6 +12,9 @@ templates = Jinja2Templates(directory="templates")
 
 # Database configuration
 DATABASE_URL = os.environ.get("DATABASE_URL")
+# DATABASE_URL = "postgresql://dbuser:dbpassword@exampledb.ccvaytimzekd.us-east-1.rds.amazonaws.com:5432/exampledb"
+print("DATABASE_URL: ", DATABASE_URL)
+print(os.getenv("DATABASE_URL"))
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
