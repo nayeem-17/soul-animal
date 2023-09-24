@@ -4,12 +4,16 @@ output "rds_endpoint" {
   sensitive = true
 }
 # security group
-output "vpc_security_group_id" {
-  value = aws_security_group.dev-sg.id
-}
+# output "vpc_security_group_id" {
+#   value = aws_security_group.dev-sg.id
+# }
 #subnet id
 
 output "subnet_id" {
   value = aws_subnet.subnet-1.id
 
+}
+
+output "vpc_id" {
+  value = aws_vpc.dev-vpc.id
 }

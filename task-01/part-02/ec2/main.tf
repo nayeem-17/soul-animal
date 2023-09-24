@@ -3,7 +3,41 @@ provider "aws" {
   region                   = "us-east-1"
   shared_credentials_files = ["~/.aws/credentials"]
 }
-
+resource "aws_security_group" "dev-web-sg" {
+  name        = "dev-security-group"
+  description = "Allowing inbound/outbound traffic"
+  vpc_id      = data.terraform_remote_state.rds.outputs.vpc_id
+  ingress {
+    description = "Allow inbound SSH traffic "
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "Allow inbound HTTP traffic "
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "Allow inbound HTTPS traffic "
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    "Name" = "Dev Security group"
+  }
+}
 data "terraform_remote_state" "rds" {
   backend = "s3"
   config = {
@@ -44,7 +78,7 @@ resource "aws_instance" "myec2" {
   availability_zone           = "us-east-1a"
   key_name                    = aws_key_pair.example.key_name # Use the key name created above
   subnet_id                   = data.terraform_remote_state.rds.outputs.subnet_id
-  vpc_security_group_ids      = [data.terraform_remote_state.rds.outputs.vpc_security_group_id]
+  vpc_security_group_ids      = [aws_security_group.dev-web-sg.id]
   associate_public_ip_address = true
   tags = {
     "Name" = "Main Server"
@@ -60,7 +94,7 @@ resource "aws_instance" "myec2" {
     docker run -d   \
         -p 80:8000   \
         --name soul-animal   \
-        -e DATABASE_URL="$DATABASE_URL"   \
+        -e DATABASE_URL=${data.terraform_remote_state.rds.outputs.rds_endpoint}   \
         n0x41yeem/soul-animal:latest
     EOF
   user_data_replace_on_change = true

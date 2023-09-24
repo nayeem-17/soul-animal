@@ -13,3 +13,9 @@
 - [ ] Deploy the application in AWS ECS and AWS RDS\
 
 ### I want to do this things but I do not want to log in into aws console again and again 
+
+
+
+
+## Resources
+- [rds and ec2](https://medium.com/strategio/using-terraform-to-create-aws-vpc-ec2-and-rds-instances-c7f3aa416133)
