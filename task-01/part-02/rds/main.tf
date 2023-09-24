@@ -13,17 +13,7 @@ resource "aws_vpc" "dev-vpc" {
   }
 }
 
-#  create a subnet
 resource "aws_subnet" "subnet-1" {
-  vpc_id            = aws_vpc.dev-vpc.id
-  cidr_block        = "10.0.1.0/24"
-  availability_zone = "us-east-1a"
-  tags = {
-    Name = "dev-subnet-1"
-  }
-}
-# create a private sybnet
-resource "aws_subnet" "subnet-2" {
   vpc_id            = aws_vpc.dev-vpc.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1a"
@@ -31,7 +21,18 @@ resource "aws_subnet" "subnet-2" {
   tags = {
     Name = "dev-subnet-1"
   }
-} # create internet gateway
+}
+
+resource "aws_subnet" "subnet-2" {
+  vpc_id            = aws_vpc.dev-vpc.id
+  cidr_block        = "10.0.2.0/24"
+  availability_zone = "us-east-1b"
+
+  tags = {
+    Name = "dev-subnet-2"
+  }
+}
+# create internet gateway
 resource "aws_internet_gateway" "dev-igw" {
   vpc_id = aws_vpc.dev-vpc.id
 }
@@ -83,8 +84,11 @@ resource "aws_security_group" "dev-db-sg" {
 }
 # create a db subnet group
 resource "aws_db_subnet_group" "db-subnet-group" {
-  name       = "example"
-  subnet_ids = [aws_subnet.subnet-2.id]
+  name = "example"
+  subnet_ids = [
+    aws_subnet.subnet-2.id,
+    aws_subnet.subnet-1.id
+  ]
 }
 
 

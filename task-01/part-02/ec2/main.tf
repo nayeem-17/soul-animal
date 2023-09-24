@@ -4,7 +4,7 @@ provider "aws" {
   shared_credentials_files = ["~/.aws/credentials"]
 }
 resource "aws_security_group" "dev-web-sg" {
-  name        = "dev-security-group"
+  name        = "dev-security-group-web"
   description = "Allowing inbound/outbound traffic"
   vpc_id      = data.terraform_remote_state.rds.outputs.vpc_id
   ingress {
@@ -35,7 +35,7 @@ resource "aws_security_group" "dev-web-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    "Name" = "Dev Security group"
+    "Name" = "Dev ec2 Security group"
   }
 }
 data "terraform_remote_state" "rds" {
