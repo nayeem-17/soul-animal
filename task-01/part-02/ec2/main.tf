@@ -3,41 +3,6 @@ provider "aws" {
   region                   = "us-east-1"
   shared_credentials_files = ["~/.aws/credentials"]
 }
-resource "aws_security_group" "dev-web-sg" {
-  name        = "dev-security-group-web"
-  description = "Allowing inbound/outbound traffic"
-  vpc_id      = data.terraform_remote_state.rds.outputs.vpc_id
-  ingress {
-    description = "Allow inbound SSH traffic "
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "Allow inbound HTTP traffic "
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "Allow inbound HTTPS traffic "
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  tags = {
-    "Name" = "Dev ec2 Security group"
-  }
-}
 data "terraform_remote_state" "rds" {
   backend = "s3"
   config = {
@@ -46,6 +11,15 @@ data "terraform_remote_state" "rds" {
     region = "us-east-1" # Adjust for your region
   }
 }
+data "terraform_remote_state" "vpc" {
+  backend = "s3"
+  config = {
+    bucket = "soul-animal-tf"
+    key    = "vpc.tfstate"
+    region = "us-east-1" # Adjust for your region
+  }
+}
+
 
 # Create an SSH key pair
 resource "tls_private_key" "example" {
@@ -77,8 +51,8 @@ resource "aws_instance" "myec2" {
   instance_type               = "t2.micro"
   availability_zone           = "us-east-1a"
   key_name                    = aws_key_pair.example.key_name # Use the key name created above
-  subnet_id                   = data.terraform_remote_state.rds.outputs.subnet_id
-  vpc_security_group_ids      = [aws_security_group.dev-web-sg.id]
+  subnet_id                   = data.terraform_remote_state.vpc.outputs.subnet1_id
+  vpc_security_group_ids      = [data.terraform_remote_state.vpc.outputs.security_group_id]
   associate_public_ip_address = true
   tags = {
     "Name" = "Main Server"
