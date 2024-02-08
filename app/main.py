@@ -1,3 +1,4 @@
+import time
 from fastapi import FastAPI, Request, Form, Depends
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import create_engine, Column, Integer, String
@@ -5,21 +6,37 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 import random
 import os
+from sqlalchemy.exc import OperationalError
+from dotenv import load_dotenv
+
+load_dotenv()
+Base = declarative_base()
+
+
+def connect_with_retry(database_url: str):
+    timeout = time.time() + 5 * 60  # 5 minutes from now
+    while True:
+        try:
+            engine = create_engine(database_url)
+            SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+            # SQLAlchemy models
+            Base.metadata.create_all(bind=engine)
+            print("Connected to the database")
+            return engine, SessionLocal
+        except OperationalError:
+            if time.time() > timeout:
+                print(
+                    "Could not connect to the database within 5 minutes, shutting down..."
+                )
+                exit(1)
+            print("Could not connect to the database, retrying in 5 seconds...")
+            time.sleep(5)
+
 
 # Define your FastAPI app
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
-
-# Database configuration
-DATABASE_URL = os.environ.get("DATABASE_URL")
-# DATABASE_URL = "postgresql://dbuser:dbpassword@exampledb.ccvaytimzekd.us-east-1.rds.amazonaws.com:5432/exampledb"
-print("DATABASE_URL: ", DATABASE_URL)
-print(os.getenv("DATABASE_URL"))
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# SQLAlchemy models
-Base = declarative_base()
 
 
 class AnimalName(Base):
@@ -29,7 +46,12 @@ class AnimalName(Base):
     name = Column(String, unique=True, index=True)
 
 
-Base.metadata.create_all(bind=engine)
+# Database configuration
+DATABASE_URL = os.environ.get("DATABASE_URL")
+print("DATABASE_URL: ", DATABASE_URL)
+print(os.getenv("DATABASE_URL"))
+engine, SessionLocal = connect_with_retry(DATABASE_URL)
+
 
 # List of random animal names (initial data)
 animal_names = [
@@ -88,6 +110,9 @@ def load_animal_names_to_db(db: Session):
 
 def get_random_animal_name(db: Session):
     count = db.query(AnimalName).count()
+    if count == 0:
+        print("No animals in database")
+        return "donkey"
     random_index = random.randint(0, count - 1)
     random_name = db.query(AnimalName).offset(random_index).first()
     return random_name.name
