@@ -15,3 +15,9 @@ variable "project" {
   description = "Project name"
   default     = "soul-animal"
 }
+
+variable "resource_group_name" {
+  type        = string
+  default     = "kml_rg_main-53d51aa891a24648"
+  description = "Resource group name in your Azure subscription."
+}
