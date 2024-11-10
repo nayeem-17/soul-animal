@@ -1,19 +1,29 @@
 output "vnet_id" {
-  description = "ID of the created virtual network"
+  description = "The ID of the virtual network"
   value       = azurerm_virtual_network.vnet.id
 }
 
 output "vnet_name" {
-  description = "Name of the created virtual network"
+  description = "The name of the virtual network"
   value       = azurerm_virtual_network.vnet.name
 }
 
-output "subnet_ids" {
-  description = "Map of subnet names to subnet IDs"
-  value       = { for k, v in azurerm_subnet.subnets : k => v.id }
+output "public_subnet_id" {
+  description = "The ID of the public subnet"
+  value       = azurerm_subnet.public.id
 }
 
-output "nsg_id" {
-  description = "ID of the created network security group"
-  value       = azurerm_network_security_group.nsg.id
-} 
+output "private_subnet_id" {
+  description = "The ID of the private subnet"
+  value       = azurerm_subnet.private.id
+}
+
+output "public_nsg_id" {
+  description = "The ID of the public subnet NSG"
+  value       = azurerm_network_security_group.public_nsg.id
+}
+
+output "private_nsg_id" {
+  description = "The ID of the private subnet NSG"
+  value       = azurerm_network_security_group.private_nsg.id
+}

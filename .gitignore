@@ -35,3 +35,6 @@ env/
 *lock.info
 .terraform/
 *backup
+*tfvars
+*tfstate
+*tfstate.backup

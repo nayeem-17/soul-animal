@@ -1,11 +1,17 @@
 variable "location" {
   type        = string
-  description = "Azure region for all resources"
+  description = "Azure region where resources will be created"
   default     = "eastus"
 }
 
-variable "project_name" {
+variable "environment" {
   type        = string
-  description = "Name of the project"
-  default     = "my-project"
-} 
+  description = "Environment name"
+  default     = "dev"
+}
+
+variable "project" {
+  type        = string
+  description = "Project name"
+  default     = "soul-animal"
+}

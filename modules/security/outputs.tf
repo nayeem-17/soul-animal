@@ -16,4 +16,4 @@ output "identity_id" {
 output "identity_principal_id" {
   description = "Principal ID of the created managed identity"
   value       = azurerm_user_assigned_identity.identity.principal_id
-} 
+}

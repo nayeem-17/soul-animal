@@ -5,7 +5,7 @@ variable "vnet_name" {
 
 variable "location" {
   type        = string
-  description = "Azure region"
+  description = "Azure region where resources will be created"
 }
 
 variable "resource_group_name" {
@@ -18,13 +18,18 @@ variable "address_space" {
   description = "Address space for the virtual network"
 }
 
-variable "subnets" {
-  type        = map(string)
-  description = "Map of subnet names to address prefixes"
+variable "public_subnet_prefix" {
+  type        = string
+  description = "CIDR block for the public subnet"
+}
+
+variable "private_subnet_prefix" {
+  type        = string
+  description = "CIDR block for the private subnet"
 }
 
 variable "tags" {
   type        = map(string)
-  description = "Tags to apply to all resources"
+  description = "Tags to be applied to all resources"
   default     = {}
-} 
+}
