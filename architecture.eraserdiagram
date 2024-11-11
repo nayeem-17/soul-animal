@@ -1,0 +1,47 @@
+title Fullstack Application on Azure Architecture
+
+// Main network boundary
+Virtual Network [icon: azure-virtual-network] {
+    // Subnets within the virtual network
+    Subnets [icon: azure-subnet] {
+        Public Subnet [icon:azure-subnet, label:"Public Subnet"]
+        Private Subnet [icon:azure-subnet, label:"Private Subnet"]
+        Azure Key Vault [icon:azure-key-vault]
+        Azure Postgres [icon:azure-postgresql]
+    }
+    
+    // Network security groups associated with subnets
+    
+    // NAT Gateway for outbound internet access
+    NAT Gateway [icon: azure-nat-gateway]
+    
+    // Route tables for managing routing
+    Virtual Network Route Table 1 [icon: azure-route-table, label: "Route Table 1"]
+    Virtual Network Route Table 2 [icon: azure-route-table, label: "Route Table 2"]
+    
+    // Bastion host for secure access
+    
+    // Private DNS for internal name resolution
+}
+
+
+Azure App Gateway [icon:azure-application-gateway]
+GitHub [icon:github]
+GitHub Actions [icon:githubactions]
+Terraform [icon:terraform]
+
+// Connections
+Subnets > NAT Gateway
+Azure App Gateway > Private Subnet
+Azure App Gateway > Azure Postgres
+Azure App Gateway > Azure Key Vault
+GitHub > GitHub Actions
+GitHub Actions > Terraform
+Terraform > Azure App Gateway
+Terraform > Azure Postgres
+Terraform > Azure Key Vault
+Public Subnet > NAT Gateway
+Private Subnet > NAT Gateway
+Private Subnet > Azure App Gateway
+Private Subnet > Azure Postgres
+Private Subnet > Azure Key Vault
