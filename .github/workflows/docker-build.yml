@@ -1,0 +1,40 @@
+name: Soul Animal Service CI
+
+on:
+  push:
+    branches: ["demo"]
+    paths:
+      - "Dockerfile"
+  pull_request:
+    branches: ["demo"]
+    paths:
+      - "Dockerfile"
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Soul Animal service image
+        run: |
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          cd app
+          docker build . --file Dockerfile --tag "soul-animal:${COMMIT_HASH}"
+
+      - name: Tag and push Soul Animal service image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/demo'
+        run: |
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          APP_IMAGE_NAME="soul-animal"
+
+          # Tag and push images
+          docker tag "soul-animal:${COMMIT_HASH}" "${APP_IMAGE_NAME}:${COMMIT_HASH}"
+          docker tag "soul-animal:${COMMIT_HASH}" "${APP_IMAGE_NAME}:latest"
+          docker images
+
+        #   docker push "${APP_IMAGE_NAME}:${COMMIT_HASH}"
+        #   docker push "${APP_IMAGE_NAME}:latest"
