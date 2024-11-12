@@ -16,4 +16,4 @@ output "client_id" {
 output "tenant_id" {
   description = "Tenant ID of the managed identity"
   value       = azurerm_user_assigned_identity.managed_identity.tenant_id
-} 
+}

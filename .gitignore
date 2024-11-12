@@ -38,3 +38,6 @@ env/
 *tfvars
 *tfstate
 *tfstate.backup
+*.pem
+*.plan
+

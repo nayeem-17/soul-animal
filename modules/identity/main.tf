@@ -14,4 +14,4 @@ resource "azurerm_role_assignment" "identity_roles" {
   scope                = each.value.scope
   role_definition_name = each.value.role_definition_name
   principal_id         = azurerm_user_assigned_identity.managed_identity.principal_id
-} 
+}

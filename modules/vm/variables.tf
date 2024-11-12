@@ -35,6 +35,12 @@ variable "user_assigned_identity_id" {
   type        = string
 }
 
+variable "custom_data" {
+  description = "Custom data script for VM initialization"
+  type        = string
+  default     = null
+}
+
 variable "tags" {
   description = "Tags to apply to all resources"
   type        = map(string)

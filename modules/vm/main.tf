@@ -38,6 +38,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   resource_group_name = var.resource_group_name
   size                = var.vm_size
   admin_username      = var.admin_username
+  custom_data         = base64encode(var.custom_data != null ? var.custom_data : "")
 
   network_interface_ids = [
     azurerm_network_interface.vm_nic.id

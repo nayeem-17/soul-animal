@@ -42,6 +42,11 @@ module "identity" {
   tags = local.tags
 }
 
+# Read init script
+locals {
+  init_script = file("${path.module}/files/init.sh")
+}
+
 # Add Linux VM
 module "vm" {
   source = "../../modules/vm"
@@ -53,6 +58,7 @@ module "vm" {
   admin_username            = var.vm_admin_username
   vm_size                   = var.vm_size
   user_assigned_identity_id = module.identity.identity_id
+  custom_data               = local.init_script
 
   tags = local.tags
 }
