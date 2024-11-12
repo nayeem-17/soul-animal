@@ -3,13 +3,8 @@ name: Soul Animal Service CI
 on:
   push:
     branches: ["demo"]
-    paths:
-      - "app/Dockerfile"
   pull_request:
     branches: ["demo"]
-    paths:
-      - "app/Dockerfile"
-#   workflow_dispatch:
 
 jobs:
   build:
