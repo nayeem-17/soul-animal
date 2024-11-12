@@ -13,12 +13,13 @@ output "vm_private_ip" {
   value       = azurerm_network_interface.vm_nic.private_ip_address
 }
 
-output "ssh_private_key_secret_name" {
-  description = "Name of the Key Vault secret containing the SSH private key"
-  value       = azurerm_key_vault_secret.ssh_private_key.name
+output "tls_private_key" {
+  description = "Generated private key for SSH access"
+  value       = tls_private_key.ssh.private_key_pem
+  sensitive   = true
 }
 
-output "ssh_public_key_secret_name" {
-  description = "Name of the Key Vault secret containing the SSH public key"
-  value       = azurerm_key_vault_secret.ssh_public_key.name
+output "tls_public_key" {
+  description = "Generated public key for SSH access"
+  value       = tls_private_key.ssh.public_key_openssh
 }

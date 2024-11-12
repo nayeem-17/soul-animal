@@ -16,7 +16,7 @@ variable "vm_name" {
 variable "vm_size" {
   description = "Size of the virtual machine"
   type        = string
-  default     = "Standard_B2s"
+  default     = "Standard_DS1_v2"
 }
 
 variable "subnet_id" {
@@ -30,13 +30,8 @@ variable "admin_username" {
   default     = "azureuser"
 }
 
-variable "key_vault_id" {
-  description = "ID of the Key Vault to store SSH keys"
-  type        = string
-}
-
-variable "key_vault_policy_id" {
-  description = "ID of the Key Vault access policy to depend on"
+variable "user_assigned_identity_id" {
+  description = "ID of the user assigned managed identity"
   type        = string
 }
 

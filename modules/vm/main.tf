@@ -4,24 +4,6 @@ resource "tls_private_key" "ssh" {
   rsa_bits  = 4096
 }
 
-# Store private key in Key Vault
-resource "azurerm_key_vault_secret" "ssh_private_key" {
-  name         = "${var.vm_name}-ssh-private-key"
-  value        = tls_private_key.ssh.private_key_pem
-  key_vault_id = var.key_vault_id
-
-  depends_on = [var.key_vault_policy_id]
-}
-
-# Store public key in Key Vault
-resource "azurerm_key_vault_secret" "ssh_public_key" {
-  name         = "${var.vm_name}-ssh-public-key"
-  value        = tls_private_key.ssh.public_key_openssh
-  key_vault_id = var.key_vault_id
-
-  depends_on = [var.key_vault_policy_id]
-}
-
 # Network Interface for VM
 resource "azurerm_network_interface" "vm_nic" {
   name                = "${var.vm_name}-nic"
@@ -60,6 +42,11 @@ resource "azurerm_linux_virtual_machine" "vm" {
   network_interface_ids = [
     azurerm_network_interface.vm_nic.id
   ]
+
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [var.user_assigned_identity_id]
+  }
 
   admin_ssh_key {
     username   = var.admin_username
