@@ -91,7 +91,6 @@ async def get_soul_animal(
     )
 
 
-@app.post("/load_animal_names/")
 async def load_animal_names(request: Request, db: Session = Depends(get_db)):
     # Load animal names into the database
     load_animal_names_to_db(db)
@@ -116,3 +115,24 @@ def get_random_animal_name(db: Session):
     random_index = random.randint(0, count - 1)
     random_name = db.query(AnimalName).offset(random_index).first()
     return random_name.name
+
+
+def init_db():
+    """Initialize the database with animal names"""
+    try:
+        # Create a temporary session
+        engine = create_engine(os.getenv("DATABASE_URL"))
+        SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+        db = SessionLocal()
+
+        # Create tables
+        Base.metadata.create_all(bind=engine)
+
+        # Load animal names
+        load_animal_names_to_db(db)
+
+        print("Database initialized successfully!")
+        db.close()
+    except Exception as e:
+        print(f"Error initializing database: {e}")
+        raise
