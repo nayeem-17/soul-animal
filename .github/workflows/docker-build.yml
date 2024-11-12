@@ -4,17 +4,17 @@ on:
   push:
     branches: ["demo"]
     paths:
-      - "Dockerfile"
+      - "app/Dockerfile"
   pull_request:
     branches: ["demo"]
     paths:
-      - "Dockerfile"
-
+      - "app/Dockerfile"
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v4
