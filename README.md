@@ -1,84 +1,46 @@
-# This is a simple application written in FastApi which will tell you your soul animal
-I want to deploy the application so a lot of people can see their soul animals. I will deploy this to aws but I do not want to log in into aws console again and again.
-## Tech Stack
-- FastApi as backend 
-- Postgres as database
-- Terraform for infrastructure provisioning and management
+# Soul Animal Application
 
-## 1. Initial Setup
-- [ ] Create backend storage account for state
-  - Create resource group for state storage
-  - Create storage account
-  - Create container
-- [ ] Set up provider configurations
-  - Azure provider settings
-  - Version constraints
-  - Feature flags
-- [ ] Define base variables
-  - Environment variables
-  - Common tags
+A FastAPI-based application deployed on Azure using Infrastructure as Code and CI/CD practices.
 
-## 2. Module Development
+## Architecture
 
-### 2.1 Network Module
-- [ ] Virtual Network
-- [ ] Subnets
-  - Subnet delegations
-  - Service endpoints
-  - Network security groups association
-- [ ] Application Gateway
-  - Routing rules
-  - Health probes
-- [ ] Network Security Groups
-  - Inbound security rules
-  - Outbound security rules
-  - Application security groups
+### Current Implementation
+![Simple Architecture](images/simplified_diagram.png)
 
-### 2.2 Security Module
-- [ ] Managed Identity
-  - User-assigned identity creation
-  - Role assignments
-- [ ] Key Vault
-  - Access policies
-  - Network access rules
-  - Secret management
+This architecture shows our current implementation with:
+- Single VM deployment in public subnet
+- Docker-based application deployment
+- GitHub Actions CI/CD pipeline
+- Infrastructure as Code using Terraform
 
-### 2.3 Compute Module
+### Future Implementation (with Enhanced Security)
+![Full Architecture](images/modified-final.png)
 
-- [ ] Web App
-  - Runtime stack
-  - Deployment configurations
-- [ ] App Settings
-  - Environment variables
-  - Connection strings
-<!-- 
+The enhanced architecture includes:
+- Private subnet for sensitive resources
+- Azure Key Vault integration
+- Managed Identity for secure access
+- Network Security Groups with specific rules
 
-### 2.4 Database Module
-- [ ] SQL Server
-  - Authentication settings
-  - Firewall rules
-  - Auditing configuration
-- [ ] SQL Database
-  - Performance settings
-  - Backup configuration
-  - Geo-replication
-- [ ] Network Rules
-  - VNET integration
-  - Private endpoints
-  - Service endpoints -->
+## Infrastructure Components
 
-## 3. Environment Configuration
+- **Azure Resources**:
+  - Virtual Network with Public/Private Subnets
+  - Network Security Groups
+  - Virtual Machine
+  - Public IP (Static)
+  - Key Vault (planned)
+  - Managed Identity (planned)
 
-### 3.1 Dev Environment
-- [ ] Variables
-  - Development-specific values
-  - Reduced SKUs
-  - Debug settings
-- [ ] Network configs
-  - Development CIDR ranges
-  - Simplified routing
-  - Test certificates
-- [ ] Security settings
-  - Relaxed policies for testing
-  - Developer access
-  - Monitoring settings
+- **Application Components**:
+  - FastAPI Application (Port 8000)
+  - PostgreSQL Database (Port 5432)
+  - Docker Runtime Environment
+
+## CI/CD Pipeline
+
+Our GitHub Actions workflow:
+1. Triggers on push/PR to `demo` branch
+2. Builds Docker image
+3. Pushes to Docker Hub
+4. Tags with commit hash and latest

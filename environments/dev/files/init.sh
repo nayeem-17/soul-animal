@@ -59,4 +59,24 @@ echo "[$(date)] Installation complete. Versions:"
 docker --version
 docker-compose --version
 
+docker run -d \
+  --name db \
+  -p 5432:5432 \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=pass \
+  -e POSTGRES_DB=demo \
+  --health-cmd="pg_isready -U postgres" \
+  --health-interval=5s \
+  --health-timeout=5s \
+  --health-retries=5 \
+  postgres
+
+sleep 15
+
+docker run -d \
+  --name soul-animal-app \
+  -p 80:8000 \
+  -e DATABASE_URL=postgresql://postgres:pass@172.17.0.1/demo \
+  -e INIT_DB=true \
+  n0x41yeem/soul-animal:latest
 echo "[$(date)] Custom init script completed"

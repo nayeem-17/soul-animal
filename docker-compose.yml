@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=demo
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # app:
+  #   image: n0x41yeem/soul-animal:latest
+  #   pull_policy: always
+  #   ports:
+  #     - "81:8000"
+  #   environment:
+  #     - DATABASE_URL=postgresql://postgres:pass@db/demo
+  #     - INIT_DB=true
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   command: >
+  #     sh -c "python -c 'from main import init_db; init_db()' &&
+  #            uvicorn main:app --host 0.0.0.0 --port 8000 --reload"

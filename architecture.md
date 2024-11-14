@@ -2,7 +2,6 @@ title Soul Animal Application Architecture
 
 Client [icon: azure-browser]
 
-
 GitHub [icon: github] {
     Repository [icon: code] {
         App Code [icon: code]
@@ -17,17 +16,31 @@ GitHub [icon: github] {
 Docker Hub [icon: azure-container-registries]
 
 Azure Infrastructure [icon: azure] {
-    Virtual Network [icon: azure-virtual-networks] {
-        Public Subnet [icon: azure-subnet] {
-            VM [icon: azure-vm]
-            NSG1 [icon: azure-nsg, label: "Public NSG"]
+    Resource Group [icon: azure-resource-group] {
+        Virtual Network [icon: azure-virtual-networks] {
+            Public Subnet [icon: azure-subnet] {
+                VM [icon: azure-vm] {
+                    Docker [icon: docker] {
+                        Container1 [icon: box, label: "FastAPI App"]
+                        Container2 [icon: box, label: "PostgreSQL"]
+                    }
+                }
+                NSG1 [icon: azure-nsg, label: "Public NSG"] {
+                    Rule1 [icon: box, label: "Allow 80,443"]
+                    Rule2 [icon: box, label: "Allow 22"]
+                }
+            }
+            Private Subnet [icon: azure-subnet] {
+                Key Vault [icon: azure-key-vaults]
+                NSG2 [icon: azure-nsg, label: "Private NSG"] {
+                    Rule1 [icon: box, label: "Allow VM Access"]
+                    Rule2 [icon: box, label: "Deny Internet"]
+                }
+            }
         }
-        Private Subnet [icon: azure-subnet] {
-            Key Vault [icon: azure-key-vaults]
-            NSG2 [icon: azure-nsg, label: "Private NSG"]
-        }
+        Public IP [icon: azure-ip, label: "Static IP"]
+        Managed Identity [icon: azure-iam-identity]
     }
-    Managed Identity [icon: azure-iam-identity]
 }
 
 Application [icon: box] {
@@ -39,7 +52,8 @@ Application [icon: box] {
 IaC --> Azure Infrastructure:Provisions All Resources
 
 // Application Flow
-Client --> VM:HTTP Port 80
+Client --> Public IP:HTTP Port 80
+Public IP --> VM:Forward Traffic
 App Code --> Actions:Trigger on Push or PR
 Build --> Push:On Success
 Push --> Docker Hub:Push Images
