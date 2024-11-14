@@ -44,10 +44,10 @@ resource "azurerm_linux_virtual_machine" "vm" {
     azurerm_network_interface.vm_nic.id
   ]
 
-  identity {
-    type         = "UserAssigned"
-    identity_ids = [var.user_assigned_identity_id]
-  }
+  # identity {
+  #   type         = "UserAssigned"
+  #   identity_ids = [var.user_assigned_identity_id]
+  # }
 
   admin_ssh_key {
     username   = var.admin_username

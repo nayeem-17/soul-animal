@@ -7,6 +7,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 data "azurerm_resource_group" "rg" {
+  # name = var.resource_group_name
   name = azurerm_resource_group.rg.name
 }
 
@@ -51,14 +52,14 @@ locals {
 module "vm" {
   source = "../../modules/vm"
 
-  vm_name                   = "${local.env}-vm"
-  location                  = var.location
-  resource_group_name       = data.azurerm_resource_group.rg.name
-  subnet_id                 = module.network.public_subnet_id
-  admin_username            = var.vm_admin_username
-  vm_size                   = var.vm_size
-  user_assigned_identity_id = module.identity.identity_id
-  custom_data               = local.init_script
+  vm_name             = "${local.env}-vm"
+  location            = var.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+  subnet_id           = module.network.public_subnet_id
+  admin_username      = var.vm_admin_username
+  vm_size             = var.vm_size
+  # user_assigned_identity_id = module.identity.identity_id
+  custom_data = local.init_script
 
   tags = local.tags
 }

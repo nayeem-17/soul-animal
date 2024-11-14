@@ -14,7 +14,7 @@ This architecture shows our current implementation with:
 - Infrastructure as Code using Terraform
 
 ### Future Implementation (with Enhanced Security)
-![Full Architecture](images/modified-final.png)
+![Full Architecture](images/final-with-acr.png)
 
 The enhanced architecture includes:
 - Private subnet for sensitive resources

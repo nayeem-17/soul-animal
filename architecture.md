@@ -13,10 +13,12 @@ GitHub [icon: github] {
     }
 }
 
-Docker Hub [icon: azure-container-registries]
-
 Azure Infrastructure [icon: azure] {
     Resource Group [icon: azure-resource-group] {
+        ACR [icon: azure-container-registries, label: "Azure Container Registry"] {
+            Images [icon: box, label: "Soul Animal Images"]
+            Webhooks [icon: box, label: "Deployment Hooks"]
+        }
         Virtual Network [icon: azure-virtual-networks] {
             Public Subnet [icon: azure-subnet] {
                 VM [icon: azure-vm] {
@@ -56,12 +58,13 @@ Client --> Public IP:HTTP Port 80
 Public IP --> VM:Forward Traffic
 App Code --> Actions:Trigger on Push or PR
 Build --> Push:On Success
-Push --> Docker Hub:Push Images
-Docker Hub --> VM:Pull Latest Image
+Push --> ACR:Push Images
+ACR --> VM:Pull Images via Private Link
 VM --> FastAPI:Deploy
 VM --> Database:Deploy
 FastAPI --> Database:Connects
 VM --> Private Subnet:Access via Service Endpoint
 VM --> Managed Identity:Uses
 Managed Identity --> Key Vault:Access Secrets via Private Endpoint
+Managed Identity --> ACR:Authenticate for Image Pull
 FastAPI --> Key Vault:Fetch DB Credentials via Private Endpoint
