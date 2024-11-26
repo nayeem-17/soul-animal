@@ -17,6 +17,39 @@ This architecture shows our current implementation with:
 ### Future Implementation (with Enhanced Security)
 ![Full Architecture](images/final-with-acr.png)
 
+### Components
+
+### Application Architecture
+![Application Architecture](images/application.png)
+
+This diagram illustrates the core application components and their interactions:
+- FastAPI backend service
+- PostgreSQL database layer
+- Docker containerization
+- API endpoints and routing
+- Data flow between components
+
+### Azure Infrastructure
+![Azure Infrastructure](images/azure-infra.png)
+
+Detailed view of our Azure resource configuration:
+- Virtual Network setup
+- Subnet configuration
+- Security group placement
+- Resource relationships
+- Network topology
+
+### CI/CD Pipeline Flow
+![CI Pipeline](images/ci.png)
+
+Visual representation of our continuous integration pipeline:
+- GitHub Actions workflow stages
+- Build and test processes
+- Container image creation
+- Deployment steps
+- Quality gates
+
+
 The enhanced architecture includes several security improvements:
 
 #### Network Segmentation
