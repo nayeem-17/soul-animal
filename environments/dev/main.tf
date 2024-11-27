@@ -25,23 +25,23 @@ module "network" {
   tags = local.tags
 }
 
-# Create managed identity
-module "identity" {
-  source = "../../modules/identity"
+# # Create managed identity
+# module "identity" {
+#   source = "../../modules/identity"
 
-  identity_name       = "${local.env}-vm-identity"
-  location            = var.location
-  resource_group_name = data.azurerm_resource_group.rg.name
+#   identity_name       = "${local.env}-vm-identity"
+#   location            = var.location
+#   resource_group_name = data.azurerm_resource_group.rg.name
 
-  role_assignments = {
-    "vm_contributor" = {
-      scope                = data.azurerm_resource_group.rg.id
-      role_definition_name = "Reader"
-    }
-  }
+#   role_assignments = {
+#     "vm_contributor" = {
+#       scope                = data.azurerm_resource_group.rg.id
+#       role_definition_name = "Reader"
+#     }
+#   }
 
-  tags = local.tags
-}
+#   tags = local.tags
+# }
 
 # Read init script
 locals {
