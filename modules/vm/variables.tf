@@ -30,10 +30,10 @@ variable "admin_username" {
   default     = "azureuser"
 }
 
-# variable "user_assigned_identity_id" {
-#   description = "ID of the user assigned managed identity"
-#   type        = string
-# }
+variable "user_assigned_identity_id" {
+  description = "ID of the user assigned managed identity"
+  type        = string
+}
 
 variable "custom_data" {
   description = "Custom data script for VM initialization"
